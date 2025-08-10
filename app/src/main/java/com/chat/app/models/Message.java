@@ -25,7 +25,7 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private MessageType type;
     public enum MessageType{
-        CHAT,PRIVATE_MESSAGE,JOIN,LEAVE,TYPING
+        CHAT,PRIVATE_MESSAGE,JOIN,LEAVE, MessageType, TYPING
     }
 }
 
