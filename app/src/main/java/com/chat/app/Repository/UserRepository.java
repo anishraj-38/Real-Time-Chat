@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.isOnline = :isOnline WHERE u.username = :username")
     public void updateUserOnlineStatus(@Param("username") String username,@Param("isOnline")boolean isOnline);
-    User findByUsername(String username);
+     User findByUsername(String username);
 }
 
