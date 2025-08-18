@@ -7,7 +7,6 @@ import com.chat.app.dto.RegisterRequestDTO;
 import com.chat.app.dto.UserDTO;
 import com.chat.app.jwt.JwtService;
 import com.chat.app.models.User;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 
 @Service
 public class AuthService {
@@ -45,16 +45,19 @@ public class AuthService {
 
     }
 
+
+
     public LoginResponseDTO loginResponseDTO(LoginRequestDTO loginRequestDTO){
-      User user = userRepository.findByUsername((loginRequestDTO.getUsername().describeConstable().orElseThrow(()-> new RuntimeException("Username not found"))));
+      Optional<User> user = userRepository.findByUsername((loginRequestDTO.getUsername().describeConstable().orElseThrow(()-> new RuntimeException("Username not found"))));
               authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(),loginRequestDTO.getPassword()));
       String jwtToken = jwtService.generateToken(user);
       return LoginResponseDTO.builder()
               .token(jwtToken)
-              .userDTO(convertToUserDTO(user))
+              .userDTO(convertToUserDTO(user.orElse(null)))
               .build();
 
     }
+
 
     public UserDTO convertToUserDTO(User user){UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
